@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Marksheet</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7fc;
+      padding: 20px;
+    }
+    .card {
+      background: #fff;
+      padding: 20px;
+      max-width: 700px;
+      margin: auto;
+      border-radius: 10px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    table, th, td {
+      border: 2px solid #000;
+    }
+    th, td {
+      padding: 8px;
+      text-align: center;
+    }
+    label {
+      font-weight: bold;
+    }
+    .info {
+      margin-bottom: 15px;
+    }
+    button {
+      display: block;
+      margin: auto;
+      padding: 10px 20px;
+      border: none;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      background: #007bff;
+      color: white;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      text-align: center;
+    }
+    .fail {
+      color: red;
+      font-weight: bold;
+    }
+    .pass {
+      color: green;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Result Card</h2>
+
+    <div class="info">
+      <label>Student Name:</label>
+      <br>
+      <input type="text" id="name">
+      <br>
+      <span id="nameError" style="color: red;"></span>
+      &nbsp;&nbsp;
+      <br>
+      <label>Roll Number:</label>
+      <br>
+      <input type="text" id="roll">
+      <span id="roleError" style="color: red;"></span>
+    </div>
+
+    <table id="marksTable">
+      <tr>
+        <th>Subject</th>
+        <th>Marks</th>
+      </tr>
+      <tr>
+        <td>Maths</td>
+        <td><input type="number" class="marks" id="mathsMarks"></td>
+      </tr>
+      <tr>
+        <td>English</td>
+        <td><input type="number" class="marks" id="englishMarks"></td>
+      </tr>
+      <tr>
+        <td>Urdu</td>
+        <td><input type="number" class="marks" id="urduMarks"></td>
+      </tr>
+      <tr>
+        <td>Physics</td>
+        <td><input type="number" class="marks" id="physicsMarks"></td>
+      </tr>
+      <tr>
+        <td>Chemistry</td>
+        <td><input type="number" class="marks" id="chemistryMarks"></td>
+      </tr>
+      <tr>
+        <td>Biology</td>
+        <td><input type="number" class="marks" id="biologyMarks"></td>
+      </tr>
+      <tr>
+        <td>PST</td>
+        <td><input type="number" class="marks" id="pstMarks"></td>
+      </tr>
+      <!-- Total Row -->
+      <tr>
+        <th>Total</th>
+        <td id="totalRow">0 / 0</td>
+      </tr>
+      <tr>
+        <th>Percentage</th>
+        <td id="percentageRow">0%</td>
+      </tr>
+      <tr>
+        <th>Grade</th>
+        <td id="gradeRow">-</td>
+      </tr>
+    </table>
+
+    <button onclick="calculateTotal()">Calculate Total</button>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    function calculateTotal() {
+      let marks = document.querySelectorAll('.marks');
+      let obtained = 0;
+      let subjects = 0;
+      
+      let name = document.getElementById("name").value;
+      let roll = document.getElementById("roll").value;
+      if(name == ""){
+        document.getElementById("nameError").innerHTML = "Name is required";
+        return;
+      }
+      else{
+        document.getElementById("nameError").innerHTML = "";
+      }
+      if(roll == ""){
+        document.getElementById("rollError").innerHTML = "Roll is required";
+        return;
+      }
+ 
+
+      var english = parseInt(document.getElementById("englishMarks").value);
+      var math = parseInt(document.getElementById("mathsMarks").value);
+      var urdu = parseInt(document.getElementById("urduMarks").value);
+      var physics = parseInt(document.getElementById("physicsMarks").value);
+      var chemistry = parseInt(document.getElementById("chemistryMarks").value);
+      var biology = parseInt(document.getElementById("biologyMarks").value);
+      var pst = parseInt(document.getElementById("pstMarks").value);
+
+      obtained = english + math + urdu + physics + chemistry + biology + pst;
+
+
+      let totalMarks = 700; 
+      let percentage = (obtained / totalMarks) * 100;
+      percentage = percentage.toFixed(2);
+
+    
+      let grade = "";
+      let gradeClass = "";
+      if (percentage <= 33) {
+        grade = "F (Fail)";
+        gradeClass = "fail";
+      } else if (percentage < 50) {
+        grade = "D";
+        gradeClass = "pass";
+      } else if (percentage < 60) {
+        grade = "C";
+        gradeClass = "pass";
+      } else if (percentage < 70) {
+        grade = "B";
+        gradeClass = "pass";
+      } else if (percentage < 80) {
+        grade = "A";
+        gradeClass = "pass";
+      } else {
+        grade = "A+";
+        gradeClass = "pass";
+      }
+
+    
+      document.getElementById("totalRow").innerHTML = `${obtained} / ${totalMarks}`;
+      document.getElementById("percentageRow").innerHTML = percentage + "%";
+      document.getElementById("gradeRow").innerHTML = `<span class="${gradeClass}">${grade}</span>`;
+
+    
+      document.getElementById("result").innerHTML = 
+        `<b>Name:</b> ${name} <br> 
+         <b>Roll No:</b> ${roll}`;  
+    document.getElementById("name").value = "";
+    document.getElementById("roll").value = "";
+
+    
+    }
+  </script>
+</body>
+</html>
